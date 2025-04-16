@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+.overlay-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+.game-state {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.player-info {
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid #f39c12;
+    border-radius: 3px;
+}
+
+.health-bar, .shield-bar {
+    height: 8px;
+    margin-top: 4px;
+    border-radius: 4px;
+    background-color: #333;
+    overflow: hidden;
+}
+
+.health-bar-inner {
+    height: 100%;
+    background-color: #2ecc71;
+    transition: width 0.3s ease;
+}
+
+.shield-bar-inner {
+    height: 100%;
+    background-color: #3498db;
+    transition: width 0.3s ease;
+}
+
+.squad-container {
+    display: flex;
+    gap: 10px;
+}
+
+.squad-member {
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    min-width: 150px;
+}
+
+.player-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.player-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.legend-name {
+    font-size: 12px;
+    color: #bbb;
+    margin-bottom: 8px;
+}
