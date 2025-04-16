@@ -9,16 +9,38 @@
 <body>
     <div id="overlay">
         <div id="status">接続中...</div>
+        <div id="game-state" class="panel">
+            <div id="match-status">マッチ外</div>
+            <div id="remaining-squads"></div>
+        </div>
         <div id="player-info" class="panel">
-            <h2>プレイヤー情報</h2>
-            <div id="player-data">
-                <div class="name">--</div>
+            <div class="player-header">
+                <div id="player-name" class="name">--</div>
+                <div id="player-legend" class="legend">--</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">HP:</div>
                 <div class="health-bar">
-                    <div class="health-fill"></div>
+                    <div id="health-fill" class="health-fill"></div>
+                    <div id="health-text" class="bar-text">0/0</div>
                 </div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">シールド:</div>
                 <div class="shield-bar">
-                    <div class="shield-fill"></div>
+                    <div id="shield-fill" class="shield-fill"></div>
+                    <div id="shield-text" class="bar-text">0/0</div>
                 </div>
+            </div>
+            <div class="stat-row kills-damage">
+                <div class="kills">キル: <span id="kills-value">0</span></div>
+                <div class="damage">ダメージ: <span id="damage-value">0</span></div>
+            </div>
+        </div>
+        <div id="squad-container" class="panel">
+            <h2>スクワッド</h2>
+            <div id="squad-members">
+                <!-- スクワッドメンバーが動的に追加される -->
             </div>
         </div>
     </div>

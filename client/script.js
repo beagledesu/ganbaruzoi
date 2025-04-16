@@ -1,9 +1,19 @@
 // WebSocket接続
 const socket = new WebSocket('ws://localhost:8765');
 const statusEl = document.getElementById('status');
-const playerNameEl = document.querySelector('.name');
-const healthFillEl = document.querySelector('.health-fill');
-const shieldFillEl = document.querySelector('.shield-fill');
+
+// プレイヤー要素
+const matchStatusEl = document.getElementById('match-status');
+const remainingSquadsEl = document.getElementById('remaining-squads');
+const playerNameEl = document.getElementById('player-name');
+const playerLegendEl = document.getElementById('player-legend');
+const healthFillEl = document.getElementById('health-fill');
+const healthTextEl = document.getElementById('health-text');
+const shieldFillEl = document.getElementById('shield-fill');
+const shieldTextEl = document.getElementById('shield-text');
+const killsValueEl = document.getElementById('kills-value');
+const damageValueEl = document.getElementById('damage-value');
+const squadMembersEl = document.getElementById('squad-members');
 
 // 接続イベント
 socket.onopen = function() {
@@ -32,20 +42,103 @@ socket.onmessage = function(event) {
     try {
         const data = JSON.parse(event.data);
         
-        // プレイヤー情報の更新
-        if (data.player) {
-            playerNameEl.textContent = data.player.name || '--';
+        // ゲーム状態の更新
+        if (data.gameState) {
+            // TODO: ゲーム状態に応じた表示の更新
+        }
+        
+        // マッチ情報の更新
+        if (data.match) {
+            const match = data.match;
             
-            if (data.player.health !== undefined && data.player.maxHealth) {
-                const healthPercent = (data.player.health / data.player.maxHealth) * 100;
-                healthFillEl.style.width = `${healthPercent}%`;
+            if (match.inProgress) {
+                matchStatusEl.textContent = 'マッチ中';
+                
+                if (match.remainingSquads) {
+                    remainingSquadsEl.textContent = `残り ${match.remainingSquads} スクワッド`;
+                    remainingSquadsEl.style.display = 'block';
+                }
+            } else {
+                matchStatusEl.textContent = 'マッチ外';
+                remainingSquadsEl.style.display = 'none';
             }
             
-            if (data.player.shields !== undefined && data.player.maxShields) {
-                const shieldPercent = (data.player.shields / data.player.maxShields) * 100;
-                shieldFillEl.style.width = `${shieldPercent}%`;
+            if (match.squadEliminated) {
+                matchStatusEl.textContent = 'スクワッド敗退';
+                matchStatusEl.style.color = '#e74c3c';
+            } else {
+                matchStatusEl.style.color = '';
             }
         }
+        
+        // プレイヤー情報の更新
+        if (data.player) {
+            const player = data.player;
+            
+            // 名前とレジェンド
+            playerNameEl.textContent = player.name || '--';
+            playerLegendEl.textContent = player.legend || '--';
+            
+            // HP
+            if (player.health !== undefined && player.maxHealth) {
+                const healthPercent = (player.health / player.maxHealth) * 100;
+                healthFillEl.style.width = `${healthPercent}%`;
+                healthTextEl.textContent = `${player.health}/${player.maxHealth}`;
+            }
+            
+            // シールド
+            if (player.shields !== undefined && player.maxShields) {
+                const shieldPercent = (player.shields / player.maxShields) * 100;
+                shieldFillEl.style.width = `${shieldPercent}%`;
+                shieldTextEl.textContent = `${player.shields}/${player.maxShields}`;
+            } else {
+                shieldFillEl.style.width = '0%';
+                shieldTextEl.textContent = '0/0';
+            }
+            
+            // キルとダメージ
+            killsValueEl.textContent = player.kills || 0;
+            damageValueEl.textContent = player.damage || 0;
+        }
+        
+        // スクワッド情報の更新
+        if (data.squad) {
+            const squad = data.squad;
+            
+            // スクワッドメンバーの表示をクリア
+            squadMembersEl.innerHTML = '';
+            
+            // 各メンバーの情報を表示
+            squad.forEach(member => {
+                // 自分自身はスキップ（playerNameElの内容と一致するかチェック）
+                if (member.name === playerNameEl.textContent) {
+                    return;
+                }
+                
+                const memberEl = document.createElement('div');
+                memberEl.className = 'squad-member';
+                
+                // HPとシールドの計算
+                const healthPercent = member.maxHealth ? (member.health / member.maxHealth) * 100 : 0;
+                const shieldPercent = member.maxShields ? (member.shields / member.maxShields) * 100 : 0;
+                
+                memberEl.innerHTML = `
+                    <div class="name">${member.name || '--'}</div>
+                    <div class="legend">${member.legend || '--'}</div>
+                    <div class="health-bar">
+                        <div class="health-fill" style="width: ${healthPercent}%"></div>
+                        <div class="bar-text">${member.health || 0}/${member.maxHealth || 0}</div>
+                    </div>
+                    <div class="shield-bar">
+                        <div class="shield-fill" style="width: ${shieldPercent}%"></div>
+                        <div class="bar-text">${member.shields || 0}/${member.maxShields || 0}</div>
+                    </div>
+                `;
+                
+                squadMembersEl.appendChild(memberEl);
+            });
+        }
+        
     } catch (e) {
         console.error('JSONパースエラー:', e);
     }
@@ -76,3 +169,15 @@ document.addEventListener('mouseup', function() {
 });
 
 overlay.style.cursor = 'grab';
+
+// キーボードショートカット
+document.addEventListener('keydown', function(e) {
+    // Alt+Oでオーバーレイの表示/非表示を切り替え
+    if (e.altKey && e.key === 'o') {
+        if (overlay.style.display === 'none') {
+            overlay.style.display = 'block';
+        } else {
+            overlay.style.display = 'none';
+        }
+    }
+});
