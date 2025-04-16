@@ -1,0 +1,15 @@
+{
+    "overlay": {
+        "theme": "dark",
+        "opacity": 0.2,
+        "fontSize": "medium"
+    },
+    "websocket": {
+        "host": "localhost",
+        "port": 7777
+    },
+    "http": {
+        "host": "localhost",
+        "port": 8080
+    }
+}
