@@ -1,9 +1,350 @@
+/* 設定ページのスタイル */
+body.settings-page {
+    background-color: #1e1e1e;
+    color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #f39c12;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.settings-container {
+    display: flex;
+    gap: 20px;
+    background-color: #272727;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.settings-nav {
+    width: 200px;
+    background-color: #1e1e1e;
+    padding: 20px 0;
+}
+
+.settings-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.settings-nav li {
+    margin-bottom: 2px;
+}
+
+.settings-nav a {
+    display: block;
+    padding: 10px 20px;
+    color: #bbb;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.settings-nav a:hover {
+    background-color: #333;
+}
+
+.settings-nav a.active {
+    background-color: #3498db;
+    color: white;
+}
+
+.settings-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.settings-section {
+    display: none;
+}
+
+.settings-section.active {
+    display: block;
+}
+
+.settings-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+    color: #f39c12;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #f8f8f8;
+}
+
+.form-group input[type="range"] {
+    width: calc(100% - 40px);
+    margin-right: 10px;
+}
+
+/* 設定ページのスタイル (続き) */
+.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.checkbox label {
+    margin-bottom: 0;
+}
+
+.color-picker {
+    display: flex;
+    align-items: center;
+}
+
+.color-picker label {
+    width: 120px;
+    margin-bottom: 0;
+}
+
+.color-picker input[type="color"] {
+    height: 36px;
+    width: 36px;
+    padding: 0;
+    margin-right: 10px;
+    border: none;
+    background: none;
+}
+
+.color-picker input[type="text"] {
+    width: 150px;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group input,
+.input-group select {
+    flex: 1;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.name-override-entries {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #333;
+    border-radius: 4px;
+}
+
+.name-override-entries h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #f39c12;
+}
+
+.name-override-list {
+    margin-bottom: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.name-override-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: #3a3a3a;
+    border-radius: 4px;
+}
+
+.name-override-item .id {
+    font-family: monospace;
+    color: #aaa;
+}
+
+.name-override-item .name {
+    font-weight: bold;
+}
+
+.name-override-item .delete {
+    color: #e74c3c;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+
+.name-override-add {
+    padding-top: 15px;
+    border-top: 1px solid #444;
+}
+
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert.info {
+    background-color: #2c3e50;
+    border-left: 4px solid #3498db;
+}
+
+.alert pre {
+    margin: 10px 0 0 0;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: monospace;
+}
+
+/* ダークテーマ/ライトテーマプレビュー */
+.theme-preview {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.preview-dark {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+.preview-light {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+}
+
+.preview-custom {
+    /* カスタムテーマのプレビュー（JavaScriptで動的に設定） */
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    .settings-container {
+        flex-direction: column;
+    }
+    
+    .settings-nav {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .settings-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .settings-nav li {
+        margin-right: 5px;
+    }
+    
+    .settings-nav a {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .color-picker {
+        flex-wrap: wrap;
+    }
+}
+
+:root {
+    --color-background: rgba(0, 0, 0, 0.7);
+    --color-text: #ffffff;
+    --color-health: #2ecc71;
+    --color-shield: #3498db;
+    --color-accent: #f39c12;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: transparent;
-    color: white;
+    color: var(--color-text);
     overflow: hidden;
 }
 
@@ -17,7 +358,7 @@ body {
 }
 
 .panel {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--color-background);
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
@@ -37,7 +378,7 @@ body {
 }
 
 #match-status {
-    color: #f39c12;
+    color: var(--color-accent);
 }
 
 #remaining-squads {
@@ -61,7 +402,7 @@ h2 {
 
 .legend {
     font-size: 14px;
-    color: #f39c12;
+    color: var(--color-accent);
 }
 
 .stat-row {
@@ -85,14 +426,14 @@ h2 {
 }
 
 .health-fill {
-    background-color: #2ecc71;
+    background-color: var(--color-health);
     height: 100%;
     width: 0%;
     transition: width 0.3s ease;
 }
 
 .shield-fill {
-    background-color: #3498db;
+    background-color: var(--color-shield);
     height: 100%;
     width: 0%;
     transition: width 0.3s ease;
@@ -145,4 +486,21 @@ h2 {
 
 .squad-member .bar-text {
     font-size: 9px;
+}
+
+/* テーマ設定 */
+body.theme-light {
+    --color-background: rgba(255, 255, 255, 0.7);
+    --color-text: #333333;
+    --color-health: #27ae60;
+    --color-shield: #2980b9;
+    --color-accent: #d35400;
+}
+
+body.theme-dark {
+    --color-background: rgba(0, 0, 0, 0.7);
+    --color-text: #ffffff;
+    --color-health: #2ecc71;
+    --color-shield: #3498db;
+    --color-accent: #f39c12;
 }

@@ -1,8 +1,10 @@
 import os
+import json
 import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from utils.logger import get_logger
+from server.api_routes import handle_api_request
 
 # ロガーの取得
 logger = get_logger()
@@ -23,37 +25,65 @@ class OverlayHTTPHandler(SimpleHTTPRequestHandler):
     
     def do_GET(self):
         """GETリクエストの処理"""
+        # APIリクエストの処理
+        if self.path.startswith('/api/'):
+            self.handle_api_request(None)
+            return
+        
         # ルートパスへのリクエストを/index.htmlにリダイレクト
         if self.path == "/" or self.path == "":
             self.path = "/index.html"
         
         # 通常のファイル処理を続行
         return super().do_GET()
-
-def start_http_server(host="localhost", port=8080, directory=None):
-    """HTTPサーバーを起動する関数"""
-    if directory is None:
-        directory = str(Path.cwd() / "client")
     
-    # ディレクトリが存在するか確認
-    if not os.path.exists(directory):
-        logger.error(f"クライアントディレクトリが見つかりません: {directory}")
-        return False
+    def do_POST(self):
+        """POSTリクエストの処理"""
+        # APIリクエストの処理
+        if self.path.startswith('/api/'):
+            # リクエストボディを取得
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            
+            try:
+                request_data = json.loads(post_data)
+                self.handle_api_request(request_data)
+            except json.JSONDecodeError:
+                self.send_error(400, "Invalid JSON")
+            
+            return
+        
+        # その他のPOSTリクエスト
+        self.send_error(404)
+    def handle_api_request(self, request_data):
+    """
+    APIリクエストの処理
     
-    # HTTPサーバーの設定
-    handler = lambda *args, **kwargs: OverlayHTTPHandler(*args, directory=directory, **kwargs)
-    
+    Parameters:
+        request_data (dict): POSTリクエストのデータ（GETの場合はNone）
+    """
     try:
-        server = HTTPServer((host, port), handler)
-        logger.info(f"HTTPサーバーを起動しました - http://{host}:{port}")
+        # APIルートハンドラを呼び出し
+        response = handle_api_request(self.path, request_data)
         
-        # サーバーをバックグラウンドで実行
-        server_thread = threading.Thread(target=server.serve_forever)
-        server_thread.daemon = True  # メインプログラム終了時にスレッドも終了
-        server_thread.start()
+        # レスポンスヘッダー
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
         
-        return server
+        # レスポンスボディ
+        self.wfile.write(json.dumps(response).encode())
     
     except Exception as e:
-        logger.error(f"HTTPサーバーの起動中にエラーが発生しました: {str(e)}")
-        return None
+        logger.error(f"APIリクエストの処理中にエラーが発生しました: {str(e)}")
+        
+        # エラーレスポンス
+        self.send_response(500)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        
+        error_response = {
+            'success': False,
+            'message': f"サーバーエラー: {str(e)}"
+        }
+        self.wfile.write(json.dumps(error_response).encode())
